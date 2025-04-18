@@ -60,18 +60,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: manager
+    app: mediastack
   name: manager
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: manager
+      app: mediastack
   template:
     metadata:
       labels:
-        app: manager
+        app: mediastack
     spec:
       volumes:
         - name: sonarr-config
@@ -133,27 +133,3 @@ spec:
             name: downloads
       dnsPolicy: ClusterFirst
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: manager
-  labels:
-    app: manager
-  namespace: default
-spec:
-  clusterIP: 10.43.245.91
-  ports:
-  - name: radarr-http
-    port: 7878
-    protocol: TCP
-    targetPort: radarr-http 
-  - name: sonarr-http
-    port: 8989
-    protocol: TCP
-    targetPort: sonarr-http 
-  selector:
-    app: manager
-  type: LoadBalancer
-status:
-  loadBalancer: {}

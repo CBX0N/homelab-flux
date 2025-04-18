@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-mediastack
+  annotations:
+    cert-manager.io/cluster-issuer: "cert-cluster-issuer"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - radarr.cbxon.co.uk
+    - sonarr.cbxon.co.uk
+    secretName: cert-mediastack
+  rules:
+  - host: raddar.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: radarr-http
+            port:
+              number: 7878
+  - host: sonarr.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sonarr-http
+            port:
+              number: 8989

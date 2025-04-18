@@ -31,18 +31,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: jellyfin
+    app: mediastack
   name: jellyfin
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jellyfin
+      app: mediastack
   template:
     metadata:
       labels:
-        app: jellyfin
+        app: mediastack
     spec:
       volumes:
         - name: jellyfin-config
@@ -92,7 +92,7 @@ kind: Service
 metadata:
   name: jellyfin
   labels:
-    app: jellyfin
+    app: mediastack
   namespace: default
 spec:
   clusterIP: 10.43.23.52
@@ -114,7 +114,7 @@ spec:
     protocol: UDP
     targetPort: jellyfin-client
   selector:
-    app: jellyfin
+    app: mediastack
   type: LoadBalancer
 status:
   loadBalancer: {}
