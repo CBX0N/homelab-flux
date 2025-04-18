@@ -11,7 +11,8 @@ spec:
   retryInterval: 1m
   timeout: 5m
   sourceRef:
-    kind: OCIRepository
-    name: flux-oci
-  path: applications/nginx
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/nginx
   prune: false
