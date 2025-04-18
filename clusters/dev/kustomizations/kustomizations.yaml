@@ -11,6 +11,8 @@ metadata:
   name: ingress
   namespace: default
 spec:
+  dependsOn:
+    - name: helm-repositories
   force: false
   wait: true
   interval: 30s
