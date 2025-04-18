@@ -86,35 +86,3 @@ spec:
             name: movies
       dnsPolicy: ClusterFirst
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: jellyfin
-  labels:
-    app: mediastack
-  namespace: default
-spec:
-  clusterIP: 10.43.23.52
-  ports:
-  - name: jellyfin-http
-    port: 8096
-    protocol: TCP
-    targetPort: jellyfin-http
-  - name: jellyfin-https
-    port: 8920
-    protocol: TCP
-    targetPort: jellyfin-https
-  - name: jellyfin-serv
-    port: 1900
-    protocol: UDP
-    targetPort: jellyfin-serv
-  - name: jellyfin-client
-    port: 7359
-    protocol: UDP
-    targetPort: jellyfin-client
-  selector:
-    app: mediastack
-  type: LoadBalancer
-status:
-  loadBalancer: {}
