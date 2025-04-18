@@ -3,6 +3,8 @@ kind: PersistentVolume
 metadata:
   name: jellyfin-pv
   namespace: default
+  labels:
+    app: mediastack
 spec:
   capacity:
     storage: 5Gi
@@ -18,6 +20,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-pv-claim
   namespace: default
+  labels:
+    app: mediastack
 spec:
   storageClassName: manual
   volumeName: jellyfin-pv
@@ -32,7 +36,7 @@ kind: Deployment
 metadata:
   labels:
     app: mediastack
-  name: jellyfin
+  name: jellyfin-deployment
   namespace: default
 spec:
   replicas: 1

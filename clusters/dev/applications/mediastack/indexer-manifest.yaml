@@ -1,0 +1,106 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prowlarr-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/prowlarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prowlarr-pv-claim
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  volumeName: prowlarr-pv
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mediastack
+  name: indexer-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediastack
+  template:
+    metadata:
+      labels:
+        app: mediastack
+    spec:
+      volumes:
+        - name: prowlarr-config
+          persistentVolumeClaim:
+            claimName: prowlarr-pv-claim
+        - name: wg-conf
+          secret:
+            secretName: wg-conf
+        - name: downloads
+          nfs:
+            server: 192.168.20.20
+            path: /mnt/nfs/data/downloads
+      initContainers:
+      - image: linuxserver/wireguard:latest
+        restartPolicy: Always
+        name: wg
+        env:
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
+        - name: wg-conf
+          mountPath: /etc/wireguard/
+          readOnly: true
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - NET_ADMIN
+      containers:
+      - name: flaresolverr
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        ports:
+          - containerPort: 8191
+            name: flaresolv-http
+        env:
+          - name: TZ
+            value: "Europe/London"
+      - name: prowlarr
+        image: lscr.io/linuxserver/prowlarr:latest
+        ports:
+          - containerPort: 9696
+            name: prowlarr-http
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+        volumeMounts:
+          - mountPath: "/config"
+            name: prowlarr-config
+          - mountPath: "/downloads"
+            name: downloads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

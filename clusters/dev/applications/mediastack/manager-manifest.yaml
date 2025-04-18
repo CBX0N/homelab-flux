@@ -3,6 +3,8 @@ kind: PersistentVolume
 metadata:
   name: radarr-pv
   namespace: default
+  labels:
+    app: mediastack
 spec:
   capacity:
     storage: 10Gi
@@ -18,6 +20,8 @@ kind: PersistentVolume
 metadata:
   name: sonarr-pv
   namespace: default
+  labels:
+    app: mediastack
 spec:
   capacity:
     storage: 10Gi
@@ -33,6 +37,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: sonarr-pv-claim
   namespace: default
+  labels:
+    app: mediastack
 spec:
   volumeName: sonarr-pv
   storageClassName: manual
@@ -47,6 +53,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: radarr-pv-claim
   namespace: default
+  labels:
+    app: mediastack
 spec:
   volumeName: radarr-pv
   storageClassName: manual
@@ -61,7 +69,7 @@ kind: Deployment
 metadata:
   labels:
     app: mediastack
-  name: manager
+  name: manager-deployment
   namespace: default
 spec:
   replicas: 1
