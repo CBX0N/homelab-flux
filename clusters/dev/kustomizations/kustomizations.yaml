@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: mediastack
+  name: ingress
   namespace: default
 spec:
   force: false
@@ -14,5 +14,27 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  path: clusters/dev/applications/nginx
+  prune: false
+  targetNamespace: ingress
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: mediastack
+  namespace: default
+spec:
+  dependsOn:
+    - name: ingress
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   path: clusters/dev/applications/mediastack
   prune: false
+  targetNamespace: default
