@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/jellyfin
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pv-claim
+spec:
+  storageClassName: manual
+  volumeName: jellyfin-pv
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jellyfin
+  name: jellyfin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      volumes:
+        - name: jellyfin-config
+          persistentVolumeClaim:
+            claimName: jellyfin-pv-claim
+        - name: tv
+          nfs:
+            server: 192.168.20.20
+            path: /mnt/nfs/data/tv
+        - name: movies
+          nfs:
+            server: 192.168.20.20
+            path: /mnt/nfs/data/movies
+      containers:
+      - name: jellyfin
+        image: jellyfin/jellyfin
+        ports:
+          - containerPort: 8096
+            name: jellyfin-http
+          - containerPort: 8920
+            name: jellyfin-https
+          - containerPort: 1900
+            name: jellyfin-serv
+            protocol: UDP
+          - containerPort: 7359
+            name: jellyfin-client
+            protocol: UDP
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+        volumeMounts:
+          - mountPath: "/config"
+            name: jellyfin-config
+          - mountPath: "/tv"
+            name: tv
+          - mountPath: "/movies"
+            name: movies
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin
+  labels:
+    app: jellyfin
+spec:
+  clusterIP: 10.43.23.52
+  ports:
+  - name: jellyfin-http
+    port: 8096
+    protocol: TCP
+    targetPort: jellyfin-http
+  - name: jellyfin-https
+    port: 8920
+    protocol: TCP
+    targetPort: jellyfin-https
+  - name: jellyfin-serv
+    port: 1900
+    protocol: UDP
+    targetPort: jellyfin-serv
+  - name: jellyfin-client
+    port: 7359
+    protocol: UDP
+    targetPort: jellyfin-client
+  selector:
+    app: jellyfin
+  type: LoadBalancer
+status:
+  loadBalancer: {}
