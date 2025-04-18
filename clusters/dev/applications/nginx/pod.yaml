@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: default
   labels:
     run: test
-  name: default
+  name: test
 spec:
   containers:
   - image: nginx
