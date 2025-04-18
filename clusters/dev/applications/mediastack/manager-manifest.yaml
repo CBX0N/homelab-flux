@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: radarr-pv
+  namespace: default
 spec:
   capacity:
     storage: 10Gi
@@ -16,6 +17,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: sonarr-pv
+  namespace: default
 spec:
   capacity:
     storage: 10Gi
@@ -30,6 +32,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: sonarr-pv-claim
+  namespace: default
 spec:
   volumeName: sonarr-pv
   storageClassName: manual
@@ -43,6 +46,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: radarr-pv-claim
+  namespace: default
 spec:
   volumeName: radarr-pv
   storageClassName: manual
@@ -58,6 +62,7 @@ metadata:
   labels:
     app: manager
   name: manager
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -135,6 +140,7 @@ metadata:
   name: manager
   labels:
     app: manager
+  namespace: default
 spec:
   clusterIP: 10.43.245.91
   ports:
