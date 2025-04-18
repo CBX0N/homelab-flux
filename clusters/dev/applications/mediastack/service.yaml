@@ -6,7 +6,7 @@ metadata:
     app: mediastack
   namespace: default
 spec:
-  clusterIP: 10.43.245.91
+  clusterIP: 10.43.245.92
   ports:
   - name: radarr-http
     port: 7878
