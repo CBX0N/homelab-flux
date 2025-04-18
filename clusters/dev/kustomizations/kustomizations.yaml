@@ -5,11 +5,13 @@ metadata:
   name: applications
   namespace: default
 spec:
-  interval: 1h
+  force: false
+  wait: true
+  interval: 30s
   retryInterval: 1m
   timeout: 5m
   sourceRef:
     kind: OCIRepository
     name: flux-oci
   path: applications/nginx
-  prune: true
+  prune: false
