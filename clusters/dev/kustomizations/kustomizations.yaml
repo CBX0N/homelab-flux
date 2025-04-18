@@ -16,7 +16,6 @@ spec:
     namespace: flux-system
   path: clusters/dev/applications/nginx
   prune: false
-  targetNamespace: ingress
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
