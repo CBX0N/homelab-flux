@@ -14,5 +14,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: applications/nginx
+  path: clusters/dev/applications/nginx
   prune: false
