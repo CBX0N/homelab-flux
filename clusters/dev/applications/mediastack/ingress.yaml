@@ -17,7 +17,7 @@ spec:
     - jellyfin.cbxon.co.uk
     - prowlarr.cbxon.co.uk
     - qbittorrent.cbxon.co.uk
-    secretName: cert-mediastack
+    secretName: certificate-mediastack
   rules:
   - host: raddar.cbxon.co.uk
     http:
