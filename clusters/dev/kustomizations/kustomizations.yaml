@@ -1,0 +1,77 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ingress
+  namespace: default
+spec:
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/nginx
+  prune: false
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: default
+spec:
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/cert-manager
+  prune: false
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: mediastack
+  namespace: default
+spec:
+  dependsOn:
+    - name: ingress
+    - name: cert-manager
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/mediastack
+  prune: false
+  targetNamespace: default
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: wireguard
+#   namespace: default
+# spec:
+#   force: false
+#   wait: true
+#   interval: 30s
+#   retryInterval: 1m
+#   timeout: 5m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   path: clusters/dev/applications/wireguard
+#   prune: false
+#   targetNamespace: default

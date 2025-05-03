@@ -1,0 +1,11 @@
+services:
+  bind9:
+    image: ubuntu/bind9:latest
+    environment:
+      - TZ=UTC
+      - BIND9_USER=root
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - /etc/bind:/etc/bind:r

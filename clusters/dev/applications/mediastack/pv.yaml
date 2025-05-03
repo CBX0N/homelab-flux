@@ -1,0 +1,102 @@
+#--- #Qbit PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qbit-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/qbit
+--- # Prowlarr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prowlarr-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/prowlarr
+--- # Jellyfin PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/jellyfin
+--- # Radarr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/radarr
+--- # Sonarr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarr-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/sonarr
+--- # jellyseerr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyseerr-pv
+  namespace: default
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /cluster/config/jellyseerr

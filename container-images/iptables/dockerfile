@@ -1,0 +1,7 @@
+FROM alpine:latest
+ARG iptables-sidecar
+MAINTAINER CBXON
+RUN mkdir /rules
+RUN apk add iptables
+COPY ./entrypoint.sh entrypoint.sh
+CMD ["sh", "entrypoint.sh"]

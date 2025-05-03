@@ -1,0 +1,21 @@
+acl "trusted" {
+        192.168.0.0/24;
+        10.0.0.0/16;
+        localhost;
+};
+
+options {
+        directory "/var/cache/bind";
+        
+        listen-on-v6 {none;};
+        recursion yes;                 # enables resursive queries
+        allow-recursion { trusted; };  # allows recursive queries from "trusted" clients
+        allow-query {trusted;};
+        allow-query-cache {trusted;};
+        allow-transfer { none; };      # disable zone transfers by default
+
+        forwarders {
+                8.8.8.8;
+                8.8.4.4;
+        };
+};
