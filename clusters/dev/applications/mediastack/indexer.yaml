@@ -35,7 +35,7 @@ spec:
             path: /mnt/nfs/data/downloads
       containers:
       - name: iptables
-        image: registry.hub.docker.com/cbxon/iptables-sidecar:v1.8
+        image: ghcr.io/cbx0n/iptables-sidecar:v1.8
         restartPolicy: Always
         securityContext:
           privileged: true
