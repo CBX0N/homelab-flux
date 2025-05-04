@@ -20,3 +20,4 @@ radarr.cbxon.co.uk.       IN      CNAME   k8s.cbxon.co.uk.
 sonarr.cbxon.co.uk.       IN      CNAME   k8s.cbxon.co.uk.
 prowlarr.cbxon.co.uk.     IN      CNAME   k8s.cbxon.co.uk.
 qbittorrent.cbxon.co.uk.  IN      CNAME   k8s.cbxon.co.uk.
+grafana.cbxon.co.uk.      IN      CNAME   k8s.cbxon.co.uk.
