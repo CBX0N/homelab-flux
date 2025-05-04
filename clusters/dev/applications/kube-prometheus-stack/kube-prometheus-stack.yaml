@@ -29,3 +29,12 @@ spec:
         name: monitoring
         namespace: default
       interval: 10m
+  values:
+    prometheus:
+      prometheusSpec:
+        additionalScrapeConfigs:
+          - job_name: 'node-exporter'
+            static_configs:
+              - targets: ['192.168.20.20:9100']
+                labels:
+                  instance: 'storage-server'
