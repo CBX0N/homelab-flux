@@ -5,6 +5,7 @@ metadata:
   labels:
     app: wireguard
   name: wireguard-deployment
+  namespace: wireguard
 spec:
   replicas: 1
   selector:
