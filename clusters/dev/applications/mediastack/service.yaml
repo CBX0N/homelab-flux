@@ -6,7 +6,6 @@ metadata:
     app: mediastack
   namespace: default
 spec:
-  clusterIP: 10.43.245.92
   ports:
   - name: jellyseerr-http
     port: 5055
@@ -46,6 +45,6 @@ spec:
     targetPort: qbit-http
   selector:
     app: mediastack
-  type: LoadBalancer
+  type: ClusterIP
 status:
   loadBalancer: {}
