@@ -1,0 +1,37 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Provider
+metadata:
+  name: discord-bot
+  namespace: flux-system
+spec:
+  type: discord
+  secretRef:
+    name: discord-webhook
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: discord-kustomize-error
+  namespace: flux-system
+spec:
+  summary: "Kustomization reconcilliation failed."
+  providerRef:
+    name: discord-bot
+  eventSeverity: error
+  eventSources:
+    - kind: Kustomization
+      name: '*'
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: discord-git-info
+  namespace: flux-system
+spec:
+  summary: "Git repository updated."
+  providerRef:
+    name: discord-bot
+  eventSources:
+    - kind: GitRepository
+      name: '*'

@@ -15,7 +15,7 @@ spec:
     name: flux-system
     namespace: flux-system
   path: clusters/dev/applications/nginx
-  prune: false
+  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -33,7 +33,7 @@ spec:
     name: flux-system
     namespace: flux-system
   path: clusters/dev/applications/kube-prometheus-stack
-  prune: false
+  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -51,7 +51,7 @@ spec:
     name: flux-system
     namespace: flux-system
   path: clusters/dev/applications/cert-manager
-  prune: false
+  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -72,8 +72,30 @@ spec:
     name: flux-system
     namespace: flux-system
   path: clusters/dev/applications/mediastack
-  prune: false
+  prune: true
   targetNamespace: default
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: guacamole
+  namespace: default
+spec:
+  dependsOn:
+    - name: ingress
+    - name: cert-manager
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/guacamole
+  prune: true
+  targetNamespace: guacamole
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -91,5 +113,5 @@ spec:
     name: flux-system
     namespace: flux-system
   path: clusters/dev/applications/wireguard
-  prune: false
+  prune: true
   targetNamespace: wireguard
