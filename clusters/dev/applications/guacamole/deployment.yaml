@@ -24,6 +24,7 @@ spec:
         nfs:
           server: 192.168.20.20
           path: /mnt/nfs/data/configs/postgres
+          readOnly: false
       initContainers:
       - image: guacamole/guacamole
         name: guacamoledb-init
@@ -44,6 +45,7 @@ spec:
             name: guacamoledb-init
           - mountPath: /var/lib/postgresql/data
             name: postgres-data
+            readOnly: false
         envFrom:
         - secretRef:
             name: postgres-user
