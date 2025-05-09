@@ -5,14 +5,18 @@ metadata:
   namespace: default
 spec:
   secretName: certificate-mediastack
+  commonName: cbxon.co.uk
+  subject:
+    organizations:
+      - cbxon
   dnsNames:
+    - cbxon.co.uk
     - jellyseerr.cbxon.co.uk
     - radarr.cbxon.co.uk
     - sonarr.cbxon.co.uk
     - jellyfin.cbxon.co.uk
     - prowlarr.cbxon.co.uk
     - qbittorrent.cbxon.co.uk
-  commonName: cbxon.co.uk
   issuerRef:
     kind: ClusterIssuer
     name: cert-cluster-issuer

@@ -30,7 +30,7 @@ spec:
             name: service-mediastack
             port:
               number: 5055
-  - host: raddar.cbxon.co.uk
+  - host: radarr.cbxon.co.uk
     http:
       paths:
       - path: /
