@@ -39,6 +39,8 @@ spec:
       containers:
       - image: postgres:14
         name: guacamoledb
+        securityContext:
+          readOnlyRootFilesystem: false
         resources: {}
         volumeMounts:
           - mountPath: /docker-entrypoint-initdb.d
