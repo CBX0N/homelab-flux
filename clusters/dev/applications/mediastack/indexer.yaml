@@ -35,6 +35,13 @@ spec:
             path: /mnt/nfs/data/downloads
       containers:
       - name: iptables
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: ghcr.io/cbx0n/iptables-sidecar:v1.8
         restartPolicy: Always
         securityContext:
@@ -46,6 +53,13 @@ spec:
           mountPath: /rules
           readOnly: true
       - name: gluetun
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: qmcgaw/gluetun:latest
         restartPolicy: Always
         securityContext:
@@ -81,6 +95,13 @@ spec:
             exec:
               command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
       - name: flaresolverr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: ghcr.io/flaresolverr/flaresolverr:latest
         ports:
           - containerPort: 8191
@@ -89,6 +110,13 @@ spec:
           - name: TZ
             value: "Europe/London"
       - name: prowlarr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: lscr.io/linuxserver/prowlarr:latest
         ports:
           - containerPort: 9696

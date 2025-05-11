@@ -24,7 +24,13 @@ spec:
       containers:
       - image: lscr.io/linuxserver/wireguard:latest
         name: wireguard
-        resources: {}
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         securityContext:
           privileged: true
           capabilities:
