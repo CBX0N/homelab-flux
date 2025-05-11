@@ -21,10 +21,8 @@ spec:
         emptyDir:
           sizeLimit: 500Mi
       - name: postgres-data
-        nfs:
-          server: 192.168.20.20
-          path: /mnt/nfs/data/configs/postgres
-          readOnly: false
+        persistentVolumeClaim:
+          claimName: guacamole-pv-claim
       initContainers:
       - image: guacamole/guacamole
         name: guacamoledb-init
@@ -39,8 +37,6 @@ spec:
       containers:
       - image: postgres:14
         name: guacamoledb
-        securityContext:
-          readOnlyRootFilesystem: false
         resources: {}
         volumeMounts:
           - mountPath: /docker-entrypoint-initdb.d
