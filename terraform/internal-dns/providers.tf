@@ -1,6 +1,6 @@
 # Configure the DNS Provider
 variable "key_secret" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -8,7 +8,7 @@ provider "dns" {
   update {
     server        = "192.168.0.249"
     key_name      = "cbxon.co.uk."
-    key_algorithm = "hmac-sha256"#
-    key_secret = var.key_secret
+    key_algorithm = "hmac-sha256" #
+    key_secret    = var.key_secret
   }
 }
