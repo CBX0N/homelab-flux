@@ -1,6 +1,6 @@
 $TTL    604800
 @       IN      SOA     ns1.cbxon.co.uk. admin.cbxon.co.uk. (
-			      5		; Serial
+			      1		; Serial
 			 604800		; Refresh
 			  86400		; Retry
 			2419200		; Expire
@@ -10,15 +10,4 @@ $TTL    604800
 @       IN      NS      ns1.cbxon.co.uk.
 
 ; A records
-ns1.cbxon.co.uk.         IN      A       192.168.0.247
-k8s.cbxon.co.uk.         IN      A       192.168.0.243
-
-; CNAME records (all point to k8s.cbxon.co.uk.)
-jellyfin.cbxon.co.uk.     IN      CNAME   k8s.cbxon.co.uk.
-jellyseerr.cbxon.co.uk.   IN      CNAME   k8s.cbxon.co.uk.
-radarr.cbxon.co.uk.       IN      CNAME   k8s.cbxon.co.uk.
-sonarr.cbxon.co.uk.       IN      CNAME   k8s.cbxon.co.uk.
-prowlarr.cbxon.co.uk.     IN      CNAME   k8s.cbxon.co.uk.
-qbittorrent.cbxon.co.uk.  IN      CNAME   k8s.cbxon.co.uk.
-grafana.cbxon.co.uk.      IN      CNAME   k8s.cbxon.co.uk.
-guacamole.cbxon.co.uk.    IN      CNAME   k8s.cbxon.co.uk.
+ns1.cbxon.co.uk.         IN      A       192.168.0.249
