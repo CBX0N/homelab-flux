@@ -40,6 +40,13 @@ spec:
             path: /mnt/nfs/data/downloads
       containers:
       - name: sonarr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: lscr.io/linuxserver/sonarr:latest
         ports:
           - containerPort: 8989
@@ -59,6 +66,13 @@ spec:
           - mountPath: "/downloads"
             name: downloads
       - name: radarr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: lscr.io/linuxserver/radarr:latest
         ports:
           - containerPort: 7878
@@ -78,6 +92,13 @@ spec:
           - mountPath: "/downloads"
             name: downloads
       - name: jellyseerr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
         image: ghcr.io/fallenbagel/jellyseerr:latest
         ports:
           - containerPort: 5055
