@@ -26,8 +26,8 @@ spec:
             path: /mnt/nfs/data/tv
         - name: movies
           nfs:
-            server: 192.168.20.20
-            path: /mnt/nfs/data/movies
+            server: 192.168.0.250
+            path: /mnt/data/movies
       containers:
       - name: jellyfin
         image: jellyfin/jellyfin
