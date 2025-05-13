@@ -53,3 +53,10 @@ resource "dns_cname_record" "guacamole" {
   name       = "guacamole"
   zone       = "cbxon.co.uk."
 }
+
+resource "dns_cname_record" "authentik" {
+  depends_on = [dns_a_record_set.k8s]
+  cname      = "k8s.cbxon.co.uk."
+  name       = "authentik"
+  zone       = "cbxon.co.uk."
+}
