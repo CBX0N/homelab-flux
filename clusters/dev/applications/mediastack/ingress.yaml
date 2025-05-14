@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-mediastack
-  namespace: default
+  namespace: mediastack
   annotations:
     cert-manager.io/cluster-issuer: "cert-cluster-issuer"
     nginx.ingress.kubernetes.io/rewrite-target: /

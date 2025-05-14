@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mediastack
   name: downloader-deployment
-  namespace: default
+  namespace: mediastack
 spec:
   strategy:
     type: RollingUpdate
@@ -22,13 +22,12 @@ spec:
         - name: qbit-config
           persistentVolumeClaim:
             claimName: qbit-pv-claim
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads-pv-claim
         - name: wg-conf
           secret:
             secretName: wg-conf-downloader
-        - name: downloads
-          nfs:
-            server: 192.168.20.20
-            path: /mnt/nfs/data/downloads
       containers:
       - name: gluetun
         resources:

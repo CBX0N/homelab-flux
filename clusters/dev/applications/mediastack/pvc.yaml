@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: qbit-pv-claim
-  namespace: default
+  namespace: mediastack
   labels:
     app: mediastack
 spec:
@@ -19,7 +19,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prowlarr-pv-claim
-  namespace: default
+  namespace: mediastack
   labels:
     app: mediastack
 spec:
@@ -35,7 +35,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-pv-claim
-  namespace: default
+  namespace: mediastack
   labels:
     app: mediastack
 spec:
@@ -51,7 +51,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: sonarr-pv-claim
-  namespace: default
+  namespace: mediastack
   labels:
     app: mediastack
 spec:
@@ -67,7 +67,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: radarr-pv-claim
-  namespace: default
+  namespace: mediastack
   labels:
     app: mediastack
 spec:
@@ -83,7 +83,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jellyseerr-pv-claim
-  namespace: default
+  namespace: mediastack
   labels:
     app: mediastack
 spec:
@@ -94,3 +94,48 @@ spec:
       storage: 5Gi
   accessModes:
     - ReadWriteOnce
+--- # Downloads PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  storageClassName: nfs-downloads
+  accessModes:
+      - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+--- # Tv PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tv-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  storageClassName: nfs-tv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+--- # Movies PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: movies-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  storageClassName: nfs-movies
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi

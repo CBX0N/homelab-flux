@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mediastack
   name: indexer-deployment
-  namespace: default
+  namespace: mediastack
 spec:
   replicas: 1
   selector:
@@ -30,9 +30,8 @@ spec:
           configMap:
             name: indexer-ipconf
         - name: downloads
-          nfs:
-            server: 192.168.20.20
-            path: /mnt/nfs/data/downloads
+          persistentVolumeClaim:
+            claimName: downloads-pv-claim
       containers:
       - name: iptables
         resources:

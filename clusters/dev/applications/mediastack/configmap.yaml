@@ -4,7 +4,7 @@ metadata:
   labels:
     app: mediastack
   name: indexer-ipconf
-  namespace: default
+  namespace: mediastack
 data:
   ip.rules: |
     ip rule add from all to 10.43.0.0/16 lookup main priority 97

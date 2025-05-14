@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mediastack
   name: manager-deployment
-  namespace: default
+  namespace: mediastack
 spec:
   replicas: 1
   selector:
@@ -26,18 +26,15 @@ spec:
         - name: jellyseerr-config
           persistentVolumeClaim:
             claimName: jellyseerr-pv-claim
-        - name: tv
-          nfs:
-            server: 192.168.20.20
-            path: /mnt/nfs/data/tv
-        - name: movies
-          nfs:
-            server: 192.168.0.250
-            path: /mnt/data/movies
         - name: downloads
-          nfs:
-            server: 192.168.20.20
-            path: /mnt/nfs/data/downloads
+          persistentVolumeClaim:
+            claimName: downloads-pv-claim
+        - name: tv
+          persistentVolumeClaim:
+            claimName: tv-pv-claim
+        - name: movies
+          persistentVolumeClaim:
+            claimName: movies-pv-claim
       containers:
       - name: sonarr
         resources:

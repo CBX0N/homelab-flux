@@ -17,5 +17,5 @@ spec:
     - hard
     - nfsvers=4.1
   nfs:      
-    path: /mnt/nfs/data/configs/postgres
-    server: 192.168.20.20
+    path: /mnt/data/configs/postgres
+    server: 192.168.0.250

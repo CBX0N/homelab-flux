@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: certificate-mediastack
-  namespace: default
+  namespace: mediastack
 spec:
   secretName: certificate-mediastack
   commonName: cbxon.co.uk

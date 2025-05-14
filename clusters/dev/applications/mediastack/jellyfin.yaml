@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mediastack
   name: jellyfin-deployment
-  namespace: default
+  namespace: mediastack
 spec:
   replicas: 1
   selector:
@@ -21,13 +21,11 @@ spec:
           persistentVolumeClaim:
             claimName: jellyfin-pv-claim
         - name: tv
-          nfs:
-            server: 192.168.20.20
-            path: /mnt/nfs/data/tv
+          persistentVolumeClaim:
+            claimName: tv-pv-claim
         - name: movies
-          nfs:
-            server: 192.168.0.250
-            path: /mnt/data/movies
+          persistentVolumeClaim:
+            claimName: movies-pv-claim
       containers:
       - name: jellyfin
         image: jellyfin/jellyfin
