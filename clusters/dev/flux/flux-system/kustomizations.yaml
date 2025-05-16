@@ -13,7 +13,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/kustomizations
+  path: ./clusters/dev/kustomizations
   targetNamespace: kube-system
   prune: true
   suspend: false
