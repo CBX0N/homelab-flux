@@ -6,7 +6,7 @@ variable "key_secret" {
 
 provider "dns" {
   update {
-    server        = "192.168.0.249"
+    server        = "192.168.0.25"
     key_name      = "cbxon.co.uk."
     key_algorithm = "hmac-sha256" #
     key_secret    = var.key_secret
