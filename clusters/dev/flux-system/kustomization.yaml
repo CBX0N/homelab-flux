@@ -4,3 +4,24 @@ resources:
 - gotk-components.yaml
 - gotk-sync.yaml
 - flux-alerts.yaml
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: Kustomization
+  namespace: default
+spec:
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - flux-system
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/kustomizations
+  targetNamespace: kube-system
+  prune: true
