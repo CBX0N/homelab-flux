@@ -10,11 +10,18 @@ resource "dns_a_record_set" "hercules" {
   zone      = "cbxon.co.uk."
 }
 
+resource "dns_a_record_set" "atlas" {
+  addresses = ["192.168.0.249"]
+  name      = "atlas"
+  zone      = "cbxon.co.uk."
+}
+
 resource "dns_a_record_set" "truenas" {
   addresses = ["192.168.0.250"]
   name      = "truenas"
   zone      = "cbxon.co.uk."
 }
+
 
 
 resource "dns_ptr_record" "k8s" {
