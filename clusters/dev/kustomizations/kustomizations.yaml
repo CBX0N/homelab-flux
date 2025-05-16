@@ -74,6 +74,7 @@ spec:
     namespace: flux-system
   path: clusters/dev/applications/authentik
   prune: true
+  suspend: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -96,7 +97,7 @@ spec:
     namespace: flux-system
   path: clusters/dev/applications/kube-prometheus-stack
   prune: true
-
+  suspend: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -120,6 +121,7 @@ spec:
   path: clusters/dev/applications/mediastack
   prune: true
   targetNamespace: mediastack
+  suspend: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -143,6 +145,7 @@ spec:
   path: clusters/dev/applications/guacamole
   prune: true
   targetNamespace: guacamole
+  suspend: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -164,3 +167,4 @@ spec:
   path: clusters/dev/applications/wireguard
   prune: true
   targetNamespace: wireguard
+  suspend: true
