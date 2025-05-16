@@ -1,12 +1,12 @@
-resource "dns_a_record_set" "k8s" {
-  addresses = ["192.168.0.243"]
-  name      = "k8s"
-  zone      = "cbxon.co.uk."
-}
-
 resource "dns_a_record_set" "hercules" {
   addresses = ["192.168.0.160"]
   name      = "hercules"
+  zone      = "cbxon.co.uk."
+}
+
+resource "dns_a_record_set" "raptor" {
+  addresses = ["192.168.0.58"]
+  name      = "truenas"
   zone      = "cbxon.co.uk."
 }
 
@@ -16,9 +16,8 @@ resource "dns_a_record_set" "truenas" {
   zone      = "cbxon.co.uk."
 }
 
-
-resource "dns_ptr_record" "k8s" {
+resource "dns_ptr_record" "raptor" {
   name = "0.243"
-  ptr  = "k8s.cbxon.co.uk."
+  ptr  = "raptor.cbxon.co.uk."
   zone = "168.192.in-addr.arpa."
 }
