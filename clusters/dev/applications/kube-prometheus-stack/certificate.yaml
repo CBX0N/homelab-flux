@@ -1,10 +1,11 @@
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: certificate-monitoring
-  namespace: monitoring
+  name: certificate-kube-prometheus-stack
+  namespace: kube-prometheus-stack
 spec:
-  secretName: certificate-monitoring
+  secretName: certificate-kube-prometheus-stack
   dnsNames:
     - grafana.cbxon.co.uk
   issuerRef:
