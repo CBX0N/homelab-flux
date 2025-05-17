@@ -4,6 +4,9 @@ metadata:
   name: cert-manager
   namespace: flux-system
 spec:
+  install:
+    createNamespace: true
+  targetNamespace: cert-manager
   interval: 10m
   chart:
     spec:
@@ -14,7 +17,5 @@ spec:
         name: cert-manager
         namespace: default
       interval: 10m
-      createNamespace: true
-      targetNamespace: cert-manager
   values:
     installCRDs: true

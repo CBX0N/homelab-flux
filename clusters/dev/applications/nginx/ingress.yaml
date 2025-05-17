@@ -5,6 +5,9 @@ metadata:
   name: ingress
   namespace: flux-system
 spec:
+  install:
+    createNamespace: true
+  targetNamespace: ingress
   interval: 10m
   chart:
     spec:
@@ -15,5 +18,3 @@ spec:
         name: ingress
         namespace: default
       interval: 10m
-      createNamespace: true
-      targetNamespace: ingress
