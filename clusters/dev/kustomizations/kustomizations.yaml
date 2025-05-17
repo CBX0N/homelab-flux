@@ -15,7 +15,6 @@ spec:
     name: flux-system
     namespace: flux-system
   path: clusters/dev/storageclasses
-  targetNamespace: kube-system
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
