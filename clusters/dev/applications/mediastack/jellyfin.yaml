@@ -21,11 +21,13 @@ spec:
           persistentVolumeClaim:
             claimName: jellyfin-pv-claim
         - name: tv
-          persistentVolumeClaim:
-            claimName: tv-pv-claim
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/tv
         - name: movies
-          persistentVolumeClaim:
-            claimName: movies-pv-claim
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/movies
       containers:
       - name: jellyfin
         image: jellyfin/jellyfin

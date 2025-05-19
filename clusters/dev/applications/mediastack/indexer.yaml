@@ -30,8 +30,9 @@ spec:
           configMap:
             name: indexer-ipconf
         - name: downloads
-          persistentVolumeClaim:
-            claimName: downloads-pv-claim
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/downloads
       containers:
       - name: iptables
         resources:

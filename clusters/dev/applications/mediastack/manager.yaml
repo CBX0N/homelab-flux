@@ -27,14 +27,17 @@ spec:
           persistentVolumeClaim:
             claimName: jellyseerr-pv-claim
         - name: downloads
-          persistentVolumeClaim:
-            claimName: downloads-pv-claim
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/downloads
         - name: tv
-          persistentVolumeClaim:
-            claimName: tv-pv-claim
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/tv
         - name: movies
-          persistentVolumeClaim:
-            claimName: movies-pv-claim
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/movies
       containers:
       - name: sonarr
         resources:
