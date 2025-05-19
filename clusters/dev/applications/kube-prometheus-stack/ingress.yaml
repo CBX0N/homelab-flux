@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-kube-prometheus-stack
+  namespace: kube-prometheus-stack
+  annotations:
+    cert-manager.io/cluster-issuer: "cert-cluster-issuer"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app.kubernetes.io/name: grafana
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - grafana.cbxon.co.uk
+    secretName: certificate-monitoring
+  rules:
+  - host: grafana.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kube-prometheus-stack-grafana
+            port:
+              number: 80

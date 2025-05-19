@@ -1,0 +1,16 @@
+services:
+  bind9:
+    image: ubuntu/bind9:latest
+    cap_add:
+      - NET_BIND_SERVICE
+    environment:
+      - TZ=UTC
+      - BIND9_USER=bind
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - type: bind
+        source: /etc/bind
+        target: /etc/bind
+        read_only: false

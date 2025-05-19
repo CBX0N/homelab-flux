@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: mediastack
+  name: indexer-ipconf
+  namespace: mediastack
+data:
+  ip.rules: |
+    ip rule add from all to 10.43.0.0/16 lookup main priority 97
+  iptables.rules: |
+    iptables -A OUTPUT -d 10.43.0.0/16 -j ACCEPT
+    iptables -A INPUT -s 10.43.0.0/16 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    iptables -A OUTPUT -d 10.43.0.0/16 -j MARK --set-mark 0 -t mangle

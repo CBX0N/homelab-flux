@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-mediastack
+  labels:
+    app: mediastack
+  namespace: mediastack
+spec:
+  ports:
+  - name: jellyseerr-http
+    port: 5055
+    protocol: TCP
+    targetPort: jellyseerr-http 
+  - name: sonarr-http
+    port: 8989
+    protocol: TCP
+    targetPort: sonarr-http 
+  - name: radarr-http
+    port: 7878
+    protocol: TCP
+    targetPort: radarr-http
+  - name: jellyfin-http
+    port: 8096
+    protocol: TCP
+    targetPort: jellyfin-http
+  - name: jellyfin-https
+    port: 8920
+    protocol: TCP
+    targetPort: jellyfin-https
+  - name: jellyfin-serv
+    port: 1900
+    protocol: UDP
+    targetPort: jellyfin-serv
+  - name: jellyfin-client
+    port: 7359
+    protocol: UDP
+    targetPort: jellyfin-client
+  - name: prowlarr-http
+    port: 9696
+    protocol: TCP
+    targetPort: prowlarr-http
+  - name: qbit-http
+    port: 8080
+    protocol: TCP
+    targetPort: qbit-http
+  selector:
+    app: mediastack
+  type: ClusterIP
+status:
+  loadBalancer: {}

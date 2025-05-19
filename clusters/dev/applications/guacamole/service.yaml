@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: guacamole
+    kustomize.toolkit.fluxcd.io/name: guacamole
+    kustomize.toolkit.fluxcd.io/namespace: guacamole
+  name: service-guacamole
+  namespace: guacamole
+spec:
+  ports:
+  - name: guacamole-http
+    port: 8080
+    protocol: TCP
+    targetPort: guacamole-http
+  selector:
+    app: guacamole
+  type: ClusterIP
+status:
+  loadBalancer: {}
