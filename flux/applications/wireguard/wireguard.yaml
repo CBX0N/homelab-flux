@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wireguard
+  name: wireguard-deployment
+  namespace: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      volumes:
+        - name: wireguard-config
+          persistentVolumeClaim:
+            claimName: wireguard-pv-claim
+      containers:
+      - image: lscr.io/linuxserver/wireguard:latest
+        name: wireguard
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["NET_ADMIN"]
+        env:
+          - name: SERVERPORT
+            value: "51820"
+          - name: PEERS
+            value: "10"
+          - name: PEERDNS
+            value: auto
+          - name: ALLOWEDIPS
+            value: "0.0.0.0/0"
+          - name: PERSISTENTKEEPALIVE_PEERS
+            value: ALL
+          - name: LOG_CONFS
+            value: "true"
+        ports:
+          - containerPort: 51820
+            name: wg-server-port
+            protocol: UDP
+        volumeMounts:
+          - mountPath: "/config"
+            name: wireguard-config
+status: {}

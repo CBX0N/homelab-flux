@@ -1,0 +1,117 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mediastack
+  name: manager-deployment
+  namespace: mediastack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediastack
+  template:
+    metadata:
+      labels:
+        app: mediastack
+    spec:
+      volumes:
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonarr-pv-claim
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-pv-claim
+        - name: jellyseerr-config
+          persistentVolumeClaim:
+            claimName: jellyseerr-pv-claim
+        - name: downloads
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/downloads
+        - name: tv
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/tv
+        - name: movies
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/movies
+      containers:
+      - name: sonarr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: lscr.io/linuxserver/sonarr:latest
+        ports:
+          - containerPort: 8989
+            name: sonarr-http
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+        volumeMounts:
+          - mountPath: "/config"
+            name: sonarr-config
+          - mountPath: "/tv"
+            name: tv
+          - mountPath: "/downloads"
+            name: downloads
+      - name: radarr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: lscr.io/linuxserver/radarr:latest
+        ports:
+          - containerPort: 7878
+            name: radarr-http
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+        volumeMounts:
+          - mountPath: "/config"
+            name: radarr-config
+          - mountPath: "/movies"
+            name: movies
+          - mountPath: "/downloads"
+            name: downloads
+      - name: jellyseerr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: ghcr.io/fallenbagel/jellyseerr:latest
+        ports:
+          - containerPort: 5055
+            name: jellyseerr-http
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+        volumeMounts:
+          - mountPath: "/app/config"
+            name: jellyseerr-config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

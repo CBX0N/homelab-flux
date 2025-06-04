@@ -1,0 +1,119 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mediastack
+  name: downloader-deployment
+  namespace: mediastack
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediastack
+  template:
+    metadata:
+      labels:
+        app: mediastack
+    spec:
+      volumes:
+        - name: qbit-config
+          persistentVolumeClaim:
+            claimName: qbit-pv-claim
+        - name: downloads
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/downloads
+        - name: wg-conf
+          secret:
+            secretName: wg-conf-downloader
+      containers:
+      - name: gluetun
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: qmcgaw/gluetun:latest
+        restartPolicy: Always
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["NET_ADMIN"]
+        env:
+          - name: VPN_SERVICE_PROVIDER
+            value: "custom"
+          - name: VPN_PORT_FORWARDING_PROVIDER
+            value: "protonvpn"
+          - name: VPN_TYPE
+            value: "wireguard"
+          - name: VPN_PORT_FORWARDING
+            value: "on"
+          - name: TZ
+            value: "Europe/London"
+          - name: DOT
+            value: "off"
+          - name: HEALTH_SERVER_ADDRESS
+            value: "0.0.0.0:9999"
+        volumeMounts:
+        - name: wg-conf
+          mountPath: gluetun/wireguard/
+          readOnly: true
+        ports:
+          - containerPort: 9999
+        readinessProbe:
+          httpGet:
+            port: 9999
+            path: /v1/health
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
+      - name: qbittorrent
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1000Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: lscr.io/linuxserver/qbittorrent:latest
+        command: ["/bin/sh","-c"]
+        args:
+          - |
+            echo "Waiting for gluetun to become ready....";
+            until wget -q --spider http://127.0.0.1:9999/v1/health; do
+              sleep 2;
+            done;
+            echo "Gluetun is ready. Starting qbittorrent...";
+            exec /init
+        ports:
+          - containerPort: 8080
+            name: qbit-http
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+          - name: WEBUI_PORT
+            value: "8080"
+        volumeMounts:
+          - mountPath: "/config"
+            name: qbit-config
+          - mountPath: "/downloads"
+            name: downloads
+        readinessProbe:
+          httpGet:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

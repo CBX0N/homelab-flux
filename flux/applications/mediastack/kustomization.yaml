@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- namespace.yaml
+- configMap.yaml
+- persistentVolume.yaml
+- persistentVolumeClaim.yaml
+- service.yaml
+- downloader.yaml
+- indexer.yaml
+- manager.yaml
+- jellyfin.yaml
+- certificate.yaml
+- ingress.yaml

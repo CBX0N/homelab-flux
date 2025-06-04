@@ -1,0 +1,103 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: guacamole
+  name: guacamole-deployment
+  namespace: guacamole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guacamole
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: guacamole
+    spec:
+      volumes:
+      - name: guacamoledb-init
+        emptyDir:
+          sizeLimit: 500Mi
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: guacamole-pv-claim
+      initContainers:
+      - image: guacamole/guacamole
+        name: guacamoledb-init
+        env:
+          - name: GUACD_HOSTNAME
+            value: localhost
+        volumeMounts:
+          - mountPath: /temp
+            name: guacamoledb-init
+        command: ["/bin/bash"]
+        args: ["-c","/opt/guacamole/bin/initdb.sh --postgresql > /temp/initdb.sql"] 
+      containers:
+      - image: postgres:14
+        name: guacamoledb
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        volumeMounts:
+          - mountPath: /docker-entrypoint-initdb.d
+            name: guacamoledb-init
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+            readOnly: false
+        envFrom:
+        - secretRef:
+            name: postgres-user
+        ports:
+          - containerPort: 5432
+      - image: guacamole/guacd
+        name: guacd
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        ports:
+          - containerPort: 4822
+      - image: guacamole/guacamole
+        name: guacamole
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        ports:
+          - containerPort: 8080
+            name: guacamole-http
+        env:
+          - name: GUACD_HOSTNAME
+            value: "127.0.0.1"
+          - name: GUACD_PORT
+            value: "4822"
+          - name: POSTGRESQL_HOSTNAME
+            value: "127.0.0.1"
+          - name: POSTGRESQL_PORT
+            value: "5432"            
+          - name: POSTGRESQL_DATABASE
+            value: postgres
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_USER
+                name: postgres-user
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: postgres-user
+status: {}

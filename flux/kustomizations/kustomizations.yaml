@@ -1,0 +1,145 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/nginx
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+  namespace: default
+spec:
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/cert-manager
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: authentik
+  namespace: default
+spec:
+  dependsOn:
+    - name: nginx
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/authentik
+  prune: true
+  suspend: false
+---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: kube-prometheus-stack
+#   namespace: default
+# spec:
+#   dependsOn:
+#     - name: nginx
+#     - name: cert-manager
+#   force: false
+#   wait: true
+#   interval: 30s
+#   retryInterval: 1m
+#   timeout: 5m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   path: clusters/dev/applications/kube-prometheus-stack
+#   prune: true
+#   suspend: false
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: mediastack
+  namespace: default
+spec:
+  dependsOn:
+    - name: nginx
+    - name: cert-manager
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/mediastack
+  prune: true
+  targetNamespace: mediastack
+  suspend: false
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: guacamole
+#   namespace: default
+# spec:
+#   dependsOn:
+#     - name: nginx
+#     - name: cert-manager
+#   force: false
+#   wait: true
+#   interval: 30s
+#   retryInterval: 1m
+#   timeout: 5m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   path: clusters/dev/applications/guacamole
+#   prune: true
+#   targetNamespace: guacamole
+#   suspend: false
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: wireguard
+#   namespace: default
+# spec:
+#   force: false
+#   wait: true
+#   interval: 30s
+#   retryInterval: 1m
+#   timeout: 5m
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   path: clusters/dev/applications/wireguard
+#   prune: true
+#   targetNamespace: wireguard
+#   suspend: false

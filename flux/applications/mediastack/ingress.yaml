@@ -1,0 +1,82 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-mediastack
+  namespace: mediastack
+  annotations:
+    cert-manager.io/cluster-issuer: "cert-cluster-issuer"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: mediastack
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - jellyseerr.cbxon.co.uk
+    - radarr.cbxon.co.uk
+    - sonarr.cbxon.co.uk
+    - jellyfin.cbxon.co.uk
+    - prowlarr.cbxon.co.uk
+    - qbittorrent.cbxon.co.uk
+    secretName: certificate-mediastack
+  rules:
+  - host: jellyseerr.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-mediastack
+            port:
+              number: 5055
+  - host: radarr.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-mediastack
+            port:
+              number: 7878
+  - host: sonarr.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-mediastack
+            port:
+              number: 8989
+  - host: jellyfin.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-mediastack
+            port:
+              number: 8096
+  - host: prowlarr.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-mediastack
+            port:
+              number: 9696
+  - host: qbittorrent.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-mediastack
+            port:
+              number: 8080

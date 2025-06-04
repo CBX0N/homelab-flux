@@ -1,0 +1,126 @@
+#--- #Qbit PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qbit-pv
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:      
+    path: /mnt/data/configs/qbit
+    server: 192.168.0.250
+--- # Prowlarr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prowlarr-pv
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:      
+    path: /mnt/data/configs/prowlarr
+    server: 192.168.0.250
+--- # Jellyfin PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:      
+    path: /mnt/data/configs/jellyfin
+    server: 192.168.0.250
+--- # Radarr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-pv
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:      
+    path: /mnt/data/configs/radarr
+    server: 192.168.0.250
+--- # Sonarr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarr-pv
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:      
+    path: /mnt/data/configs/sonarr
+    server: 192.168.0.250
+--- # jellyseerr PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyseerr-pv
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manual
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:      
+    path: /mnt/data/configs/jellyseerr
+    server: 192.168.0.250

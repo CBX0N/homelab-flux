@@ -1,0 +1,96 @@
+#--- # Qbit PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbit-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  storageClassName: manual
+  volumeName: qbit-pv
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+--- # Prowlarr PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prowlarr-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  storageClassName: manual
+  volumeName: prowlarr-pv
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+--- # Jellyfin PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  storageClassName: manual
+  volumeName: jellyfin-pv
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+--- # Sonarr PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  volumeName: sonarr-pv
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+--- # Radarr PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  volumeName: radarr-pv
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+--- # jellyseerr PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyseerr-pv-claim
+  namespace: mediastack
+  labels:
+    app: mediastack
+spec:
+  volumeName: jellyseerr-pv
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 5Gi
+  accessModes:
+    - ReadWriteOnce

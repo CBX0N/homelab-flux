@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-guacamole
+  namespace: guacamole
+  annotations:
+    cert-manager.io/cluster-issuer: "cert-cluster-issuer"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: guacamole
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - guacamole.cbxon.co.uk
+    secretName: certificate-guacamole
+  rules:
+  - host: guacamole.cbxon.co.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-guacamole
+            port:
+              number: 8080
+

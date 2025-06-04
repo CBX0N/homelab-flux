@@ -1,0 +1,8 @@
+manual-secrets.yaml
+tsig.conf
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+terraform.auto.tfvars
+__pycache__

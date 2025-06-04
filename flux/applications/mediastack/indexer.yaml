@@ -1,0 +1,137 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mediastack
+  name: indexer-deployment
+  namespace: mediastack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediastack
+  template:
+    metadata:
+      labels:
+        app: mediastack
+    spec:
+      volumes:
+        - name: prowlarr-config
+          persistentVolumeClaim:
+            claimName: prowlarr-pv-claim
+        - name: wg-conf
+          secret:
+            secretName: wg-conf-indexer
+            items:
+              - key: wg0.conf
+                path: wg0.conf
+        - name: rules
+          configMap:
+            name: indexer-ipconf
+        - name: downloads
+          nfs:
+            server: 192.168.0.250
+            path: /mnt/data/downloads
+      containers:
+      - name: iptables
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: ghcr.io/cbx0n/iptables-sidecar:v1.8
+        restartPolicy: Always
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["NET_ADMIN"]
+        volumeMounts:
+        - name: rules
+          mountPath: /rules
+          readOnly: true
+      - name: gluetun
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: qmcgaw/gluetun:latest
+        restartPolicy: Always
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["NET_ADMIN"]
+        env:
+          - name: VPN_SERVICE_PROVIDER
+            value: "custom"
+          - name: VPN_TYPE
+            value: "wireguard"
+          - name: TZ
+            value: "Europe/London"
+          - name: DOT
+            value: "off"
+          - name: HEALTH_SERVER_ADDRESS
+            value: "0.0.0.0:9999"
+          - name: DNS_ADDRESS
+            value: "10.43.0.10"
+        volumeMounts:
+        - name: wg-conf
+          mountPath: gluetun/wireguard/
+          readOnly: true
+        ports:
+          - containerPort: 9999
+        readinessProbe:
+          httpGet:
+            port: 9999
+            path: /v1/health
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
+      - name: flaresolverr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        ports:
+          - containerPort: 8191
+            name: flaresolv-http
+        env:
+          - name: TZ
+            value: "Europe/London"
+      - name: prowlarr
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 250Mi
+          requests:
+            cpu: 1m
+            memory: 50Mi
+        image: lscr.io/linuxserver/prowlarr:latest
+        ports:
+          - containerPort: 9696
+            name: prowlarr-http
+        env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Etc/UTC"
+        volumeMounts:
+          - mountPath: "/config"
+            name: prowlarr-config
+          - mountPath: "/downloads"
+            name: downloads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
