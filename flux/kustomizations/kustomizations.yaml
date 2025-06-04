@@ -5,6 +5,7 @@ metadata:
   name: nginx
   namespace: default
 spec:
+  suspend: true
   force: false
   wait: true
   interval: 30s
@@ -23,6 +24,7 @@ metadata:
   name: cert-manager
   namespace: default
 spec:
+  suspend: true
   force: false
   wait: true
   interval: 30s
@@ -41,6 +43,7 @@ metadata:
   name: authentik
   namespace: default
 spec:
+  suspend: true
   dependsOn:
     - name: nginx
   force: false
@@ -54,29 +57,28 @@ spec:
     namespace: flux-system
   path: clusters/dev/applications/authentik
   prune: true
-  suspend: false
 ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: kube-prometheus-stack
-#   namespace: default
-# spec:
-#   dependsOn:
-#     - name: nginx
-#     - name: cert-manager
-#   force: false
-#   wait: true
-#   interval: 30s
-#   retryInterval: 1m
-#   timeout: 5m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   path: clusters/dev/applications/kube-prometheus-stack
-#   prune: true
-#   suspend: false
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kube-prometheus-stack
+  namespace: default
+spec:
+  suspend: true
+  dependsOn:
+    - name: nginx
+    - name: cert-manager
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/kube-prometheus-stack
+  prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -84,6 +86,7 @@ metadata:
   name: mediastack
   namespace: default
 spec:
+  suspend: true
   dependsOn:
     - name: nginx
     - name: cert-manager
@@ -99,47 +102,46 @@ spec:
   path: clusters/dev/applications/mediastack
   prune: true
   targetNamespace: mediastack
-  suspend: false
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: guacamole
-#   namespace: default
-# spec:
-#   dependsOn:
-#     - name: nginx
-#     - name: cert-manager
-#   force: false
-#   wait: true
-#   interval: 30s
-#   retryInterval: 1m
-#   timeout: 5m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   path: clusters/dev/applications/guacamole
-#   prune: true
-#   targetNamespace: guacamole
-#   suspend: false
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: wireguard
-#   namespace: default
-# spec:
-#   force: false
-#   wait: true
-#   interval: 30s
-#   retryInterval: 1m
-#   timeout: 5m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   path: clusters/dev/applications/wireguard
-#   prune: true
-#   targetNamespace: wireguard
-#   suspend: false
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: guacamole
+  namespace: default
+spec:
+  suspend: true
+  dependsOn:
+    - name: nginx
+    - name: cert-manager
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/guacamole
+  prune: true
+  targetNamespace: guacamole
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: wireguard
+  namespace: default
+spec:
+  suspend: true
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: clusters/dev/applications/wireguard
+  prune: true
+  targetNamespace: wireguard
