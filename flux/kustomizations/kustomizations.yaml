@@ -5,7 +5,7 @@ metadata:
   name: nginx
   namespace: default
 spec:
-  suspend: true
+  suspend: false
   force: false
   wait: true
   interval: 30s
@@ -15,7 +15,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/nginx
+  path: ./flux/applications/nginx
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -24,7 +24,7 @@ metadata:
   name: cert-manager
   namespace: default
 spec:
-  suspend: true
+  suspend: false
   force: false
   wait: true
   interval: 30s
@@ -34,7 +34,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/cert-manager
+  path: ./flux/applications/cert-manager
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -43,7 +43,7 @@ metadata:
   name: authentik
   namespace: default
 spec:
-  suspend: true
+  suspend: false
   dependsOn:
     - name: nginx
   force: false
@@ -55,7 +55,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/authentik
+  path: ./flux/applications/authentik
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -77,7 +77,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/kube-prometheus-stack
+  path: ./flux/applications/kube-prometheus-stack
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -99,7 +99,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/mediastack
+  path: ./flux/applications/mediastack
   prune: true
   targetNamespace: mediastack
 ---
@@ -122,7 +122,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/guacamole
+  path: ./flux/applications/guacamole
   prune: true
   targetNamespace: guacamole
 ---
@@ -142,6 +142,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: clusters/dev/applications/wireguard
+  path: ./flux/applications/wireguard
   prune: true
   targetNamespace: wireguard

@@ -71,10 +71,11 @@ Before deploying this homelab setup, ensure you have the following tools install
    Ensure your Kubernetes context is set to the target cluster, then bootstrap Flux:
 
    ```bash
-   flux bootstrap github      --owner=CBX0N      --repository=homelab-flux      --branch=main      --path=clusters/dev
+   flux install
+   kubectl create secret generic flux-system -n flux-system --from-file=identity=./flux-id --from-file=known_hosts=<(ssh-keyscan github.com)
+   kubectl apply -f gotk-components.yaml
+   kubectl apply -f gotk-sync.yaml
    ```
-
-   > *Replace `CBX0N` and `homelab-flux` with your GitHub username and repository if you've forked the project.*
 
 ## Customization
 
