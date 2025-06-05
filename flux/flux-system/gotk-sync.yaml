@@ -32,10 +32,10 @@ metadata:
   name: kustomizations
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 30s
   path: ./flux/kustomizations
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  suspend: true
+  suspend: false
