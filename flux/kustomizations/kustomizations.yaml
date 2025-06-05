@@ -34,7 +34,28 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./flux/applications/cert-manager
+  path: ./flux/applications/cert-manager/controller
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: certs
+  namespace: default
+spec:
+  dependsOn:
+    - name: cert-manager
+  suspend: false
+  force: false
+  wait: true
+  interval: 30s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  path: ./flux/applications/cert-manager/certs
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
